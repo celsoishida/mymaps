@@ -1,88 +1,73 @@
-<!DOCTYPE html>
-<html  lang="pt-br">
+
+<!doctype html>
+<html lang="en">
 <head>
-<title>Celso Yoshikazu Ishida</title>
+
+<title>A Draggable Element and a Droppable Element</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<link rel="stylesheet" type="text/css" href="style.css">
+
 <style>
-#map {width:100%;height:100%;}
+#makeMeDraggable { float: left; width: 30px; height: 30px; background: red; }
+#makeMeDroppable { float: right; width: 500px; height: 500px; border: 1px solid #999}
+#draggableHelper { width: 3	0px; height: 30px; background: yellow; }
 </style>
-   
-        <link rel="stylesheet" href="geo01.css" />
-<!--script  type="text/javascript">
- 
-    function initGeolocation() {
- if (navigator && navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-        } else {
-            console.log('Geolocation is not supported');
-        }
-}
- 
-function errorCallback() {}
- 
-function successCallback(position) {
-      var mapUrl = "http://maps.google.com/maps/api/staticmap?center=";
-      mapUrl = mapUrl + position.coords.latitude + ',' + position.coords.longitude;
-      mapUrl = mapUrl + '&zoom=15&size=512x512&maptype=roadmap&sensor=true';
-      var imgElement = document.getElementById("static-map");
-      imgElement.src = mapUrl;
-	  
-	  var lat = document.getElementById("placar_latitude");
-      lat.innerHTML ="<p>"+ position.coords.latitude +"</p>";
-	  //$("#placar_latitude").html("<p>"+ position.coords.latitude +"</p>");
-	  var lon = document.getElementById("placar_longitude");
-      lon.innerHTML ="<p>"+ position.coords.longitude +"</p>";
-	  //$("#placar_longitude").html("<p>"+ position.coords.longitude +"</p>");
-    }
 
-initGeolocation();
-</script-->
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
-</head>
-<body>
-      <div id="map-canvas"></div></td>
-     <div id="barra">
-		<!--div id="icon001" draggable="true"  cursor="move" revert="true" ></div>
-		<div id="icon002b" draggable="true"></div>
-		<img id="icon002" src="icon002.png" /-->
-		<img id="icon001" src="icon001.png" onClick="mudarcursor('icon001.png')"/>
-		<img id="icon002" src="icon002.png" onClick="mudarcursor('icon002.png')"/>
-		<img id="icon003" src="icon003.png" onClick="mudarcursor('icon003.png')"/>
-		<img id="icon004" src="icon004.png" onClick="mudarcursor('icon004.png')" />
-		<img id="icon005" src="icon005.png" onClick="mudarcursor('icon005.png')" />
-      </div>
-
-	  <!--div class="row">
-      <div id="map-canvas" class="col-xs-10 col-sm-8">1<br /><br /><br /><br /></div>
-      <div id="barra" class="col-xs-2 col-sm-4">
-        Level 2: .col-xs-4 .col-sm-6
-		<div id="icon001" draggable="true"></div>
-		<div id="icon002" draggable="true"></div>
-      </div>
-    </div>
-
-	  <!--div class="row">
-    <div id="map-canvas" class="col-xs-10 col-sm-8"></div>
-        <div id="barra" class="col-xs-2 col-sm-4">
-            <div id="icon001" draggable="true"></div>
-            <div id="icon002" draggable="true"></div>
-        </div>
-</div-->
-
-        <div id="localizacao" class="esconder">
-            <div id="placar_latitude">Latitude<p>0</p></div>
-            <div id="placar_longitude">Longitude<p>0</p></div>
-            
-        </div>
-
-        <!--div id="rodape" class="esconder">
-            <div id="placar_reciclagem"><p>0</p></div>
-            <div id="placar_melhor"><p>0</p></div>
-            <div id="placar_tempo"><p>100</p></div>
-        </div-->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/jquery-ui.min.js"></script>
         <script src="assets/js/jquery.ui.touch-punch.min.js"></script>
-<script src="geo01.js"></script>
+<script type="text/javascript">
+//; background: url( mapa.jpg)
+
+$( init );
+
+function init() {
+  $('#makeMeDraggable').draggable({
+    helper: 'clone',
+	});
+  $('#makeMeDroppable').droppable( {
+    accept: '#makeMeDraggable',
+	drop: handleDropEvent
+  } );
+}
+function myHelper( event ) {
+  return '<div id="draggableHelper">I am a helper - drag me!</div>';
+}
+
+function handleDropEvent( event, ui ) {
+  var draggable = ui.draggable;
+              var offsetXPos = parseInt(ui.offset.left - $(this).offset().left);
+            var offsetYPos = parseInt(ui.offset.top - $(this).offset().top);
+  alert( 'The square with ID "' + draggable.attr('id') + '" was dropped onto me! ('+offsetXPos+','+offsetYPos+')' );
+  //$(this).append($(ui.draggable).clone());
+  //$(ui.draggable).clone().css('position','relative').appendTo('#makeMeDroppable');
+  var offset = ui.helper.offset();
+  ui.helper.clone().appendTo( this ).offset( offset );
+}
+
+</script>
+
+</head>
+<body>
+
+<div class="wideBox">
+  <h1>Drag-and-Drop with jQuery: Your Essential Guide</h1>
+  <h2>A Draggable Element and a Droppable Element</h2>
+</div>
+
+<div id="content" style="height: 400px;">
+
+  <div id="makeMeDraggable"> </div>
+  <div id="makeMeDroppable"><img src="mapa.jpg" width=500px height=500px> </div>
+   <!--img src="mapa.jpg" width=500px height=500px-->
+
+</div>
+
+<div class="wideBox">
+  <p>&copy; Elated.com | <a href="http://www.elated.com/articles/drag-and-drop-with-jquery-your-essential-guide/">Back to Tutorial</a></p>
+  <p style="font-size: .8em; line-height: 1.5em;"><a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a><br />This <span xmlns:dc="http://purl.org/dc/elements/1.1/" href="http://purl.org/dc/dcmitype/Text" rel="dc:type">work</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.elated.com/" property="cc:attributionName" rel="cc:attributionURL">http://www.elated.com/</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.</p>
+</div>
 
 </body>
 </html>
+
